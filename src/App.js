@@ -5,8 +5,8 @@ class Subject extends Component {
   render() {
     return (
       <header>
-        <h1>WEB</h1>
-        This is my first react_app and git
+        <h1>{ this.props.title }</h1>
+        <p>{ this.props.sub }</p>
       </header>
     );
   }
@@ -30,9 +30,8 @@ class Content extends Component {
   render() {
     return (
       <article>
-        <h2>HTML</h2>
-        
-        Hello World
+        <h2>{ this.props.title }</h2>
+        <p>{ this.props.desc }</p>
       </article>
     );
   }
@@ -42,9 +41,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Subject></Subject>
+        <Subject title="WEB" sub="my first react and git"></Subject>
+        <Subject title="React" sub="react"></Subject>
+        <Subject title="Git" sub="git"></Subject>
         <Toc></Toc>
-        <Content></Content>
+        <Content title="HTML" desc="Hello World"></Content>
       </div>
     );
   }
