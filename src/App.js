@@ -30,7 +30,7 @@ class App extends Component {
       _desc = this.state.contents[0].desc;
     }
 
-    //bind : App에 있는 객체를 함수로 가져와 사용할수있게함.
+    //bind() : App에 있는 객체를 function()<함수>로 가져와 사용할수있게함.
     return (
       <div className="App">
         {/* <Sub 
@@ -41,10 +41,18 @@ class App extends Component {
           <h1><a href="/" onClick={function(e) {
             console.log(e);
             e.preventDefault();
-            // this.state.mode = 'welcome'; 동적으로 수정할때 이렇게 쓰면 안된다.
-            this.setState({
-              mode:'welcome'
-            });
+            // this.state.mode = 'welcome'; //동적으로 수정할때 이렇게 쓰면 안된다.
+            //state 값을 수정할때는 setState()를 사용해야한다.
+            if(this.state.mode == 'read') {
+              this.setState({
+                mode:'welcome'
+              });
+            }else {
+              this.setState({
+                mode:'read'
+              });
+            }
+
           }.bind(this)}>{ this.state.subject.title }</a></h1>
           <p>{ this.state.subject.sub }</p>
         </header>
