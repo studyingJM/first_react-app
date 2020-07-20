@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       mode:"read",
+      selected_content_id:2,
       subject:{title:"Web", sub:"My first react and git"},
       welcome:{title:"Welcome",desc:"Hello, React!!"},
       contents:[
@@ -25,41 +26,49 @@ class App extends Component {
     if(this.state.mode === 'welcome') {
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
-    }else if(this.state.mdoe === 'read') {
-      _title = this.state.contents[0].title;
-      _desc = this.state.contents[0].desc;
+    }else if(this.state.mode === 'read') {
+      var i = 0;
+      while(i < this.state.contents.length) {
+        var data  = this.state.contents[i];
+        if(data.id === this.state.selected_content_id) {
+          _title = data.title;
+          _desc = data.desc;
+          break;
+        }
+        i = i + 1;
+      }
     }
 
     //bind() : App에 있는 객체를 function()<함수>로 가져와 사용할수있게함.
     return (
       <div className="App">
-        {/* <Sub 
+        <Sub 
           title={this.state.subject.title} 
-          sub={this.state.subject.sub}>
-        </Sub> */}
-        <header>
-          <h1><a href="/" onClick={function(e) {
-            console.log(e);
-            e.preventDefault();
-            // this.state.mode = 'welcome'; //동적으로 수정할때 이렇게 쓰면 안된다.
-            //state 값을 수정할때는 setState()를 사용해야한다.
-            if(this.state.mode == 'read') {
-              this.setState({
-                mode:'welcome'
-              });
-            }else {
-              this.setState({
-                mode:'read'
-              });
-            }
-
-          }.bind(this)}>{ this.state.subject.title }</a></h1>
-          <p>{ this.state.subject.sub }</p>
-        </header>
+          sub={this.state.subject.sub}
+          //이벤트 호출 함수.
+          onChangePage = {
+            //props
+            function() {
+              alert("Sub Change");
+              if(this.state.mode === 'read') {
+                this.setState({mode:'welcome'});
+              }else {
+                this.setState({mode:'read'});
+              }
+            }.bind(this)
+          }
+        >
+        </Sub>
         <Sub title="React" sub="react"></Sub>
         <Sub title="Git" sub="git"></Sub>
-        <Toc data={this.state.contents}></Toc>
-        <Content title={_title} desc={_desc}></Content>
+        <Toc onChangePage = {
+          function(id) {
+            alert('Toc Change');
+            this.setState({mode:'read',selected_content_id:Number(id)});
+          }.bind(this)} 
+          data={this.state.contents}
+        />
+        <Content title={_title} desc={_desc}/>
       </div>
     );
   }
