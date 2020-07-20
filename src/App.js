@@ -5,16 +5,12 @@ import Content from "./components/Content.js";
 import './App.css';
 
 class App extends Component {
-  //stat값을 초기화 시켜주는 작업.
-  /*
-    불필요한 정보를 노출시키지 않게하여 가독성을 높임?
-    class가 내부적으로 사용할 상태는 state형태를 이용.
-    상위 컴포넌트의 state값을 하위 컴포넌트의 props로 전달.
-  */
   constructor(props) {
     super(props);
     this.state = {
-      subject:{title:"web", sub:"My first react and git"},
+      mode:"read",
+      subject:{title:"Web", sub:"My first react and git"},
+      welcome:{title:"Welcome",desc:"Hello, React!!"},
       contents:[
         {id:1,title:"HTML", desc:"HTML is HyperText ..."},
         {id:2,title:"CSS", desc:"CSS is Design"},
@@ -24,16 +20,38 @@ class App extends Component {
   }
 
   render() {
+    console.log('App render');
+    var _title, _desc = null;
+    if(this.state.mode === 'welcome') {
+      _title = this.state.welcome.title;
+      _desc = this.state.welcome.desc;
+    }else if(this.state.mdoe === 'read') {
+      _title = this.state.contents[0].title;
+      _desc = this.state.contents[0].desc;
+    }
+
+    //bind : App에 있는 객체를 함수로 가져와 사용할수있게함.
     return (
       <div className="App">
-        <Sub 
+        {/* <Sub 
           title={this.state.subject.title} 
           sub={this.state.subject.sub}>
-        </Sub>
+        </Sub> */}
+        <header>
+          <h1><a href="/" onClick={function(e) {
+            console.log(e);
+            e.preventDefault();
+            // this.state.mode = 'welcome'; 동적으로 수정할때 이렇게 쓰면 안된다.
+            this.setState({
+              mode:'welcome'
+            });
+          }.bind(this)}>{ this.state.subject.title }</a></h1>
+          <p>{ this.state.subject.sub }</p>
+        </header>
         <Sub title="React" sub="react"></Sub>
         <Sub title="Git" sub="git"></Sub>
         <Toc data={this.state.contents}></Toc>
-        <Content title="HTML" desc="Hello World"></Content>
+        <Content title={_title} desc={_desc}></Content>
       </div>
     );
   }
